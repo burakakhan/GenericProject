@@ -1,0 +1,139 @@
+<pre>
+ECommerceApp.sln
+├── ECommerceApp.Contracts 				(1)		
+│   ├── Enums
+│   │   ├── <span style="color:red">ProductStatus.cs				(1-1)	15.04 15:25 --> Durum (Aktif,Pasif vb.) statik tanımlamalar</span>
+│   │   └── <u style="color:green">CategoryStatus.cs				(Yeni)</u>
+│   ├── Constants
+│   │   └── AppRoles.cs					(1-2)	15.04 15:42 --> Genel değişken tanımlamalar (Admin,Üye vb.)
+│   └── ResponseModels
+│       └── ApiResponse.cs				(1-3)	15.04 15:45 --> Api cevaplarının (hata yada başarılı cevap) şekillendirildiği yer
+│
+│
+├── ECommerceApp.Domain 				(2)		
+│   ├── Common
+│   │   └── BaseEntity.cs				(2-1)	15.04 14:49 --> Her classta bulunan standart alanlar
+│   ├── Entities
+│   │   ├── <span style="color:red">Product.cs					(2-2)	15.04 18:02 --> Model tanımlaması</span>
+│   │   └── <u style="color:green">Category.cs					(Yeni)</u>
+│   ├── Exceptions
+│   │   └── NotFoundException.cs			(2-3)	15.04 15:06 --> Controller tarafında hata özelleştirmeye yardımcı olur.
+│   └── Interfaces
+│       ├── UnitOfWork
+│       │   └── <span style="color:blue">IUnitOfWork.cs				(2-4)	15.04 15:05 --> Repositorilerin tanımlandığı şablon UnitOfWork</span>
+│       └── Repositories
+│	        ├── IGenericRepository.cs		(2-5)	15.04 16:09 --> Genel CRUD işlemlerin veritabanına yansıyacak şablonunun olduğu işlem bütünü
+│	        ├── <span style="color:red">IProductRepository.cs		(2-6) 	15.04 17:12 --> IGenericRepositoryden türetiyor ayrıca Producta özel repository tanımlaması yapılıyor.</span>
+│	        └── <u style="color:green">ICategoryRepository.cs		(Yeni)</u>
+│
+│
+│	### PROJE REFERANS
+│	Contracts
+│
+├── ECommerceApp.Application 				(3)		
+│   ├── Interfaces
+│   │   ├── Services
+│   │   │   ├── IGenericService.cs			(3-1)	15.04 16:17 --> Genel CRUD işlemlerinin Repositorye yansıyacak şablonunun olduğu işlem bütünü
+│   │   │   ├── <span style="color:red">IProductService.cs			(3-2)	15.04 17:27 --> IGenericServiceden türetiliyor ayrıca Producta özel servis tanımlaması yapılıyor.</span> 
+│   │   │   └── <u style="color:green">ICategoryService.cs			(Yeni)</u>
+│   ├── Validators
+│   │   └── <span style="color:red">ProductValidator.cs				(3-3)	15.04 16:38 --> Ekleme ve düzenleme için FluentValidation ile valifation tanımlamaları yapılıyor</span>
+│   │   └── <u style="color:green">CategoryValidator.cs			(Yeni)</u>
+│   ├── Mapping/
+│   │   └── <span style="color:blue">AutoMapperProfile.cs			(3-4)	15.04 17:32 --> Product entitylerinin ProductDto ya dönüştürümesini sağlıyor.</span>
+│   ├── DTOs
+│   │   ├── <span style="color:red">ProductDto.cs				(3-5)	15.04 18:02 --> Product entitysinin Dto kopyasi</span>
+│   │   ├── <span style="color:red">CreateProductDto.cs				(3-6)	15.04 18:02 --> Product entitysinin ekleme işlemi için Dto kopyasi</span>
+│   │   ├── <span style="color:red">UpdateProductDto.cs				(3-7)	15.04 18:02 --> Product entitysinin düzenleme işlemi için Dto kopyasi</span>
+│   │   ├── <u style="color:green">CategoryDto.cs				(Yeni)</u>
+│   │   ├── <u style="color:green">CreateCategoryDto.cs			(Yeni)</u>
+│   │   └── <u style="color:green">UpdateCategoryDto.cs			(Yeni)</u>
+│   └── Services
+│       ├── <span style="color:red">ProductService.cs				(3-8)	16.04 14:44 --> UnitOfWork üzerinden respository kaydı oluşturuluyor.</span>
+│       └── <u style="color:green">CategoryService.cs				(Yeni)</u>
+│
+│	### PROJE REFERANS
+│	Contracts
+│	Domain
+│
+│	### PAKET KÜTÜPHANE
+│	AutoMapper
+│	FluentValidation
+│	FluentValidation.DependencyInjectionExtensions
+│
+│
+├── ECommerceApp.Infrastructure 			(4)		
+│   ├── Data
+│   │   ├── <span style="color:blue">AppDbContext.cs				(4-1)	16.04 16:48 --> Database bağlantısı ve ilk oluşturulacak kayıtlar burada tanımlanabilir</span>
+│   │   ├── Repositories
+│   │   │   ├── GenericRepository.cs			(4-2)	15.04 17:51 --> IGenericRepository ve Baseentity den türetilip CRUD işlemleri genel tanımlanıyor.
+│   │   │   ├── <span style="color:red">ProductRepository.cs			(4-3)	15.04 18:04 --> GenericRepository ve IProductRepository den türetilip özel CRUD işlemleri tanımlanıyor.</span>
+│   │   │   └── <u style="color:green">CategoryRepository.cs	(Yeni)</u>
+│   │   └── <span style="color:blue">UnitOfWork.cs				(4-4)	16.04 12:06	--> Bu alanda Irespositoryler, Complete ve Dispose işlemleri tanımlanıyor.</span>
+│   ├── ExternalServices
+│   │   ├── EmailSender.cs				(4-5)	16.04 12:22 --> Mail gönderme işlemi tanımlanıyor.
+│   │   └── PaymentService.cs				(4-6)	16.04 12:24 --> Ödeme işlemleri tanımlanıyor.
+│   └── Configuration
+│       └── AppConfiguration.cs				(4-7)	16.04 12:36 --> SmtpSetting, PaymentSetting gibi ayarların tutulduğu alan.
+│
+│	### PROJE REFERANS
+│	Contracts
+│	Domain
+│
+│	### PAKET KÜTÜPHANE
+│	Microsoft.EntityFrameworkCore
+│	Microsoft.EntityFrameworkCore.SqlServer
+│	Microsoft.Extensions.Configuration
+│	Microsoft.Extensions.Configuration.Binder
+│
+│
+├── ECommerceApp.API 					(5)		
+│   ├── Middlewares
+│   │   └── ExceptionMiddleware.cs			(5-1)	16.04 12:50 --> Hata yönetimini genel bir tanımlamaya çevirme hali
+│   ├── Controllers						
+│   │   ├── <span style="color:red">ProductsController.cs			(5-2)	16.04 13:00 --> Ürünlerin listelendiği alan</span>
+│   │   └── <u style="color:green">CategoriesController.cs			(Yeni)</u>
+│   ├── Configuration
+│   │   └── ConfigureSwaggerOptions.cs			(5-3)	16.04 15:25 --> Swagger kullanılacaksa ayarların tanımlandığı alan
+│   ├── <span style="color:blue">Program.cs					(5-4)	16.04 16:00 --> Genel middlewarelerin tanımlandığı alan</span>
+│   └── appsettings.json				(5-5)	16.04 15:32 --> Genel ayarların yapıldığı alan
+│
+│	### PROJE REFERANS
+│	Contracts
+│	Application
+│	Infrastructure
+│
+│	### PAKET KÜTÜPHANE
+│	Asp.Versioning.Mvc
+│	Asp.Versioning.Mvc.ApiExplorer
+│	AspNetCoreRateLimit
+│	Microsoft.AspNetCore.OpenApi
+│	Microsoft.EntityFrameworkCore.Design
+│	Microsoft.EntityFrameworkCore.Tools
+│	Microsoft.Extensions.Caching.Memory
+│	Swashbuckle.AspNetCore
+
+###########################################################################
+
+yukarıdaki klasör yapısına eksiksiz sahip; 
+
+1. Katmanlı Mimari (Layered Architecture)
+2. DTO Kullanımı (Data Transfer Object)
+3. Model Doğrulama (Validation)
+4. Hata Yönetimi (Global Error Handling)
+5. Standart HTTP Durum Kodları
+6. API Versiyonlama
+7. CORS Ayarları
+8. Logging & Monitoring
+9. Rate Limiting & Throttling
+10. Asenkron Kodlama
+11. Response Şablonu (Custom Response Wrapper)
+12. Cacheleme
+
+
+özelliklerine sahip bir restfull api örneği yazar mısın?
+
+
+
+##################################################################
+</pre>
